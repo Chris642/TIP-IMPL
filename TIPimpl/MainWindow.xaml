@@ -13,17 +13,13 @@
                 <ColumnDefinition Width="31*"/>
                 <ColumnDefinition Width="21*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="Send" Content="Send" HorizontalAlignment="Left" Margin="10,288,0,0" VerticalAlignment="Top" Width="75" Click="Send_click"/>
             <ComboBox x:Name="iNList" HorizontalAlignment="Left" Margin="10,227,0,0" VerticalAlignment="Top" Width="120"/>
-            <Button x:Name="StopL" Grid.ColumnSpan="2" Content="Stop" HorizontalAlignment="Left" Margin="125,288,0,0" VerticalAlignment="Top" Width="75" Click="StopLclick"/>
             <ProgressBar x:Name="INPROG" HorizontalAlignment="Left" Height="16" Margin="10,254,0,0" VerticalAlignment="Top" Width="228" Grid.ColumnSpan="2"/>
             <TextBox x:Name="ipBOX" HorizontalAlignment="Left" Height="23" Margin="10,31,0,0" TextWrapping="Wrap" Text="127.0.0.1" VerticalAlignment="Top" Width="120"/>
             <Button x:Name="Call" Content="Call" HorizontalAlignment="Left" Margin="10,59,0,0" VerticalAlignment="Top" Width="75" Click="Call_Click"/>
             <Button x:Name="End_call" Content="End Call" HorizontalAlignment="Left" Margin="10,86,0,0" VerticalAlignment="Top" Width="75" Click="End_call_Click"/>
         </Grid>
         <Grid HorizontalAlignment="Left" Height="320" Margin="253,0,0,0" VerticalAlignment="Top" Width="264">
-            <Button x:Name="Receive" Content="Receive" HorizontalAlignment="Left" Height="26" Margin="42,284,0,0" VerticalAlignment="Top" Width="68" Click="Receive_Click"/>
-            <Button x:Name="StopR" Content="Stop" HorizontalAlignment="Left" Margin="159,284,0,0" VerticalAlignment="Top" Width="75" Click="StopR_Click"/>
             <ProgressBar x:Name="OUTPROG" HorizontalAlignment="Left" Height="16" Margin="10,253,0,0" VerticalAlignment="Top" Width="228"/>
             <ComboBox x:Name="oUTList" HorizontalAlignment="Left" Margin="10,226,0,0" VerticalAlignment="Top" Width="120"/>
         </Grid>

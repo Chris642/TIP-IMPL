@@ -30,8 +30,13 @@ namespace TIPimpl
         public void Closeconn()
         {
             //newUDPConn.CloseConnection(false);
+            NetworkComms.CloseAllConnections();
+            NetworkComms.RemoveGlobalIncomingPacketHandler<byte[]>("icecream", Unamangedbytevoice);
+            NetworkComms.RemoveGlobalIncomingPacketHandler();
+            Debug.WriteLine(NetworkComms.GlobalIncomingPacketHandlerExists("icecream"));
+            
             NetworkComms.Shutdown();
-
+            
         }
 
         public void Datasend(byte[] buff)

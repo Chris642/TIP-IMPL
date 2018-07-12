@@ -13,16 +13,16 @@ namespace TIPimpl
 {
     class VoiceHandling
     {
-        public WaveIn waveIn = new WaveIn();
-        public WaveOut waveOut = new WaveOut();
-        public static BufferedWaveProvider playBuffer;
+        public WaveIn waveIn = null;
+        public WaveOut waveOut = null;
+        public static BufferedWaveProvider playBuffer = null;
         OpusEncoder encoder = null;
         static OpusDecoder decoder = null;
-        int segmentFrames;
-        int bytesPerSegment;
-        ulong bytesSent;
-        DateTime startTime;
-        Networking network;
+        int segmentFrames = 0;
+        int bytesPerSegment = 0;
+        ulong bytesSent = 0;
+        DateTime startTime = DateTime.Now;
+        Networking network = null;
         int sum = 0;
         static int outsum = 0;
 
@@ -31,27 +31,17 @@ namespace TIPimpl
         byte[] soundBuffer = new byte[0];
         public VoiceHandling()
         {
-            this.network = new Networking();
+            //this.network = new Networking();
         }
         
         
-        public List<String> populateIN_devices()
+        public void callme(int device_num_in, int device_num_out, string ip)
         {
-            List<String> iNList = new List<String>();
-            for (int i = 0; i < WaveIn.DeviceCount; i++)
-            {
-                iNList.Add(WaveIn.GetCapabilities(i).ProductName);
-            }
-            return iNList;
-        }
-        public List<String> populateOUT_devices()
-        {
-            List<String> oUTList = new List<String>();
-            for (int i = 0; i < WaveOut.DeviceCount; i++)
-            {
-                oUTList.Add(WaveOut.GetCapabilities(i).ProductName);
-            }
-            return oUTList;
+            waveIn = new WaveIn();
+            waveOut = new WaveOut();
+            network = new Networking();
+            Record_OPUS(device_num_in, ip);
+            Play_OPUS(device_num_out, ip);
         }
 
 
@@ -138,13 +128,20 @@ namespace TIPimpl
             }
         }
 
+        public static short LossyAbs(short value)
+        {
+            if (value >= 0) return value;
+            if (value == short.MinValue) return short.MaxValue;
+            return Math.Abs(value);
+        }
+
         static public void decode(byte[] buff, int len)
         {
             buff = decoder.Decode(buff, len, out len);
             outsum = 0;
             for (int i = 0; i < 8; i++)
             {
-                outsum += Math.Abs(BitConverter.ToInt16(buff, 200 * i));
+                outsum += LossyAbs(BitConverter.ToInt16(buff, 200 * i));
             }
             outsum /= 8;
             MainWindow.volumeout = outsum;
@@ -160,12 +157,16 @@ namespace TIPimpl
                 waveIn = null;
             }
             network.Closeconn();
+            network = null;
             if (waveOut != null)
             {
                 waveOut.Stop();
                 waveOut.Dispose();
                 waveOut = null;
             }
+            notEncodedBuffer = new byte[0];
+            EncodedBuffer = new byte[0];
+            soundBuffer = new byte[0];
             playBuffer = null;
             if (encoder != null)
             {
