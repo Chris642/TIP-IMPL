@@ -25,7 +25,10 @@ namespace TIPimpl
         Networking network = null;
         int sum = 0;
         static int outsum = 0;
-
+        public int volume_in = 0;
+        public int volume_out = 0;
+        public int lastmax = 0;
+        
         byte[] notEncodedBuffer = new byte[0];
         byte[] EncodedBuffer = new byte[0];
         byte[] soundBuffer = new byte[0];
@@ -83,8 +86,8 @@ namespace TIPimpl
                 sum += Math.Abs(BitConverter.ToInt16(e.Buffer, 200 * i));
             }
             sum /= 8;
-            MainWindow.volumein = sum;
-            if (sum > MainWindow.lastmax * 0.2)
+            volume_in = sum;
+            if (sum > lastmax * 0.2)
             {
                 soundBuffer = new byte[e.BytesRecorded + notEncodedBuffer.Length]; //Legnht = new data + old data
                 for (int i = 0; i < notEncodedBuffer.Length; i++)   //First we try encode as much as we can from old data
@@ -144,7 +147,7 @@ namespace TIPimpl
                 outsum += LossyAbs(BitConverter.ToInt16(buff, 200 * i));
             }
             outsum /= 8;
-            MainWindow.volumeout = outsum;
+            volume_out = outsum;
             playBuffer.AddSamples(buff, 0, len);
         }
 
