@@ -25,8 +25,8 @@ namespace TIPimpl
         Networking network = null;
         int sum = 0;
         static int outsum = 0;
-        public int volume_in = 0;
-        public int volume_out = 0;
+        static public int volume_in = 0;
+        static public int volume_out = 0;
         public int lastmax = 0;
         
         byte[] notEncodedBuffer = new byte[0];
